@@ -1,0 +1,115 @@
+How it works:
+Ternary Search is similar to Binary Search, but instead of dividing the array into two halves, it divides it into three parts.
+
+It workTernary Search Algorithm
+s by calculating two middle points: mid1 = low + (high - low) / 3 and mid2 = high - (high - low) / 3.
+
+Compare the key with the two middle elements.
+
+If the key matches arr[mid1], return mid1.
+
+If the key matches arr[mid2], return mid2.
+
+If the key is smaller than arr[mid1], search the left part.
+
+If the key is larger than arr[mid2], search the right part.
+
+Otherwise, search the middle part.
+
+Time and Space Complexity:
+Time Complexity: O(log₃ n)
+
+Space Complexity: O(1)
+
+C++ Implementation:
+
+#include <iostream>
+using namespace std;
+
+int ternarySearch(int arr[], int low, int high, int key) {
+    if (high >= low) {
+        int mid1 = low + (high - low) / 3;
+        int mid2 = high - (high - low) / 3;
+        
+        if (arr[mid1] == key) return mid1;
+        if (arr[mid2] == key) return mid2;
+        
+        if (key < arr[mid1]) return ternarySearch(arr, low, mid1 - 1, key);
+        if (key > arr[mid2]) return ternarySearch(arr, mid2 + 1, high, key);
+        return ternarySearch(arr, mid1 + 1, mid2 - 1, key);
+    }
+    return -1;
+}
+
+int main() {
+    int arr[] = {1, 3, 5, 7, 9, 11, 13, 15, 17};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int key = 13;
+    
+    int result = ternarySearch(arr, 0, n - 1, key);
+    if (result == -1) cout << "Element not found\n";
+    else cout << "Element found at index " << result << endl;
+    
+    return 0;
+}
+Interpolation Search Algorithm
+How it works:
+Interpolation Search assumes that the elements are uniformly distributed.
+
+It calculates the probable position of the key using the formula:
+pos=low+(key-arr[low])×(high-low)/arr[high]-arr[low]
+If the key matches arr[pos], return pos.
+
+If the key is smaller than arr[pos], search the left half.
+
+If the key is larger than arr[pos], search the right half.
+
+Time and Space Complexity:
+Time Complexity: Best case: O(log log n), Worst case: O(n)
+
+Space Complexity: O(1)
+
+C++ Implementation:
+cpp
+Copy
+Edit
+#include <iostream>
+using namespace std;
+
+int interpolationSearch(int arr[], int low, int high, int key) {
+    if (low <= high && key >= arr[low] && key <= arr[high]) {
+        int pos = low + ((key - arr[low]) * (high - low)) / (arr[high] - arr[low]);
+        
+        if (arr[pos] == key) return pos;
+        if (arr[pos] > key) return interpolationSearch(arr, low, pos - 1, key);
+        return interpolationSearch(arr, pos + 1, high, key);
+    }
+    return -1;
+}
+
+int main() {
+    int arr[] = {10, 12, 13, 16, 20, 30, 40, 50, 70, 80, 100};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int key = 30;
+    
+    int result = interpolationSearch(arr, 0, n - 1, key);
+    if (result == -1) cout << "Element not found\n";
+    else cout << "Element found at index " << result << endl;
+    
+    return 0;
+}
+Summary of Findings:
+Ternary Search:
+How it works: Divides the array into three parts, searching the appropriate part.
+
+Complexity: Time: O(log₃ n), Space: O(1)
+
+Use Case: Works best with sorted arrays and aims to minimize comparisons by dividing the array into three.
+
+Interpolation Search:
+How it works: Assumes uniform distribution, estimates the key's position and searches nearby.
+
+Complexity: Best case: O(log log n), Worst case: O(n)
+
+Use Case: Best for uniformly distributed data but can degrade in the case of skewed data.
+

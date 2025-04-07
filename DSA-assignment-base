@@ -1,0 +1,95 @@
+Individual Assignment 1: Pointer-Based Sorting Algorithm and Complexity Analysis
+
+Objective:
+Implement sorting algorithms using pointers in C++, compare different sorting methods, perform complexity analysis, and summarize the findings.
+
+1. Bubble Sort Using Pointers
+void bubbleSort(int* arr, int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (*(arr + j) > *(arr + j + 1)) {
+                int temp = *(arr + j);
+                *(arr + j) = *(arr + j + 1);
+                *(arr + j + 1) = temp;
+            }
+        }
+    }
+}
+Complexity:
+
+Best: O(n)
+
+Worst: O(n²)
+
+Average: O(n²)
+
+Space: O(1)
+
+
+2. Selection Sort Using Pointers
+void selectionSort(int* arr, int size) {
+    for (int i = 0; i < size - 1; i++) {
+        int min_idx = i;
+        for (int j = i + 1; j < size; j++) {
+            if (*(arr + j) < *(arr + min_idx)) {
+                min_idx = j;
+            }
+        }
+        int temp = *(arr + i);
+        *(arr + i) = *(arr + min_idx);
+        *(arr + min_idx) = temp;
+    }
+}
+Complexity:
+
+Best/Worst/Average: O(n²)
+
+Space: O(1)
+
+3. Quick Sort Using Pointers
+void quickSort(int* arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int partition(int* arr, int low, int high) {
+    int pivot = *(arr + high);
+    int i = (low - 1);
+    for (int j = low; j <= high - 1; j++) {
+        if (*(arr + j) < pivot) {
+            i++;
+            int temp = *(arr + i);
+            *(arr + i) = *(arr + j);
+            *(arr + j) = temp;
+        }
+    }
+    int temp = *(arr + i + 1);
+    *(arr + i + 1) = *(arr + high);
+    *(arr + high) = temp;
+    return (i + 1);
+}
+Complexity:
+
+Best: O(n log n)
+
+Worst: O(n²)
+
+Average: O(n log n)
+
+Space: O(log n)
+
+Summary of Findings:
+Using pointers optimizes memory access and improves efficiency.
+
+Bubble Sort and Selection Sort are easy to understand but inefficient for large datasets.
+
+Quick Sort is faster and more suitable for larger datasets.
+
+Recommendation:
+
+For learning purposes, start with Bubble Sort.
+
+For performance, use Quick Sort.

@@ -1,95 +1,100 @@
-Individual Assignment 1: Pointer-Based Sorting Algorithm and Complexity Analysis
+Individual Assignment: Algorithms Using Arrays
 
-Objective:
-Implement sorting algorithms using pointers in C++, compare different sorting methods, perform complexity analysis, and summarize the findings.
+1. Algorithm to Find the Smallest Number in an Array (Using Pointers in C++)
+cpp
+Copy
+Edit
+#include <iostream>
+using namespace std;
 
-1. Bubble Sort Using Pointers
-void bubbleSort(int* arr, int size) {
-    for (int i = 0; i < size - 1; i++) {
-        for (int j = 0; j < size - i - 1; j++) {
-            if (*(arr + j) > *(arr + j + 1)) {
-                int temp = *(arr + j);
-                *(arr + j) = *(arr + j + 1);
-                *(arr + j + 1) = temp;
-            }
+int findSmallest(int* arr, int size) {
+    int smallest = *arr;  // Assume first element is smallest
+    for (int i = 1; i < size; i++) {
+        if (*(arr + i) < smallest) {
+            smallest = *(arr + i);
+        }
+    }
+    return smallest;
+}
+Explanation:
+
+We assume the first element is the smallest.
+
+We traverse the array using pointers.
+
+We update the smallest variable whenever we find a smaller element.
+
+Time Complexity: O(n)
+
+Space Complexity: O(1)
+
+2. Algorithm to Find the Second and Third Largest Elements in an Array (Using Pointers in C++)
+cpp
+Copy
+Edit
+#include <iostream>
+using namespace std;
+
+void findSecondAndThirdLargest(int* arr, int size, int& second, int& third) {
+    if (size < 3) {
+        cout << "Array must have at least 3 elements." << endl;
+        return;
+    }
+
+    int first = -9999999;
+    second = -9999999;
+    third = -9999999;
+
+    for (int i = 0; i < size; i++) {
+        int current = *(arr + i);
+
+        if (current > first) {
+            third = second;
+            second = first;
+            first = current;
+        } else if (current > second && current != first) {
+            third = second;
+            second = current;
+        } else if (current > third && current != second && current != first) {
+            third = current;
         }
     }
 }
-Complexity:
+Explanation:
 
-Best: O(n)
+We use three variables: first, second, and third to track the top three largest values.
 
-Worst: O(n²)
+On each iteration, we compare and update them accordingly, ignoring duplicates.
 
-Average: O(n²)
+This solution works in a single pass.
 
-Space: O(1)
+Time Complexity: O(n)
 
+Space Complexity: O(1)
 
-2. Selection Sort Using Pointers
-void selectionSort(int* arr, int size) {
-    for (int i = 0; i < size - 1; i++) {
-        int min_idx = i;
-        for (int j = i + 1; j < size; j++) {
-            if (*(arr + j) < *(arr + min_idx)) {
-                min_idx = j;
-            }
-        }
-        int temp = *(arr + i);
-        *(arr + i) = *(arr + min_idx);
-        *(arr + min_idx) = temp;
-    }
+Example Usage:
+cpp
+Copy
+Edit
+int main() {
+    int arr[] = {14, 3, 27, 8, 35, 10, 27};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    int smallest = findSmallest(arr, size);
+    cout << "Smallest Number: " << smallest << endl;
+
+    int second, third;
+    findSecondAndThirdLargest(arr, size, second, third);
+    cout << "Second Largest: " << second << endl;
+    cout << "Third Largest: " << third << endl;
+
+    return 0;
 }
-Complexity:
-
-Best/Worst/Average: O(n²)
-
-Space: O(1)
-
-3. Quick Sort Using Pointers
-void quickSort(int* arr, int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
-}
-
-int partition(int* arr, int low, int high) {
-    int pivot = *(arr + high);
-    int i = (low - 1);
-    for (int j = low; j <= high - 1; j++) {
-        if (*(arr + j) < pivot) {
-            i++;
-            int temp = *(arr + i);
-            *(arr + i) = *(arr + j);
-            *(arr + j) = temp;
-        }
-    }
-    int temp = *(arr + i + 1);
-    *(arr + i + 1) = *(arr + high);
-    *(arr + high) = temp;
-    return (i + 1);
-}
-Complexity:
-
-Best: O(n log n)
-
-Worst: O(n²)
-
-Average: O(n log n)
-
-Space: O(log n)
-
 Summary of Findings:
-Using pointers optimizes memory access and improves efficiency.
+The smallest number can be found efficiently by linear scan with pointers.
 
-Bubble Sort and Selection Sort are easy to understand but inefficient for large datasets.
+Finding second and third largest elements requires careful comparison, avoiding duplicates.
 
-Quick Sort is faster and more suitable for larger datasets.
+All implementations use pointer arithmetic and are optimized with O(n) time and O(1) space.
 
-Recommendation:
-
-For learning purposes, start with Bubble Sort.
-
-For performance, use Quick Sort.
+This approach demonstrates pointer proficiency and efficient algorithm design.

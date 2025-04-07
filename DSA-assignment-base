@@ -1,100 +1,77 @@
-Individual Assignment: Algorithms Using Arrays
+Individual Assignment: Iterative and Recursive Approaches in Algorithms
+1. What is Iterative and Recursive Approach in Algorithms?
+Iterative Approach:
+An iterative approach solves a problem by repeatedly executing a set of instructions using loops such as for, while, or do-while. It controls the flow of execution manually and updates variables explicitly until the desired condition is met.
 
-1. Algorithm to Find the Smallest Number in an Array (Using Pointers in C++)
+Recursive Approach:
+A recursive approach solves a problem by breaking it down into smaller sub-problems of the same type. The function calls itself within its definition and continues until it reaches a base case that stops the recursion. It requires both a base case and a recursive case.
+
+Comparison:
+
+Iterative solutions are usually more memory-efficient and faster because they don’t use the system stack.
+
+Recursive solutions are often easier to write and understand for problems that are naturally recursive, like divide and conquer algorithms.
+
+Iteration uses loop constructs; recursion uses function calls.
+
+Iteration has constant space complexity; recursion uses additional space due to the call stack.
+
+2. Binary Search Implementation Using Iterative and Recursive Approaches
+Note: Binary Search only works on a sorted array.
+
+Iterative Binary Search Using Pointers in C++
+
 cpp
 Copy
 Edit
-#include <iostream>
-using namespace std;
+int binarySearchIterative(int* arr, int size, int target) {
+    int left = 0, right = size - 1;
 
-int findSmallest(int* arr, int size) {
-    int smallest = *arr;  // Assume first element is smallest
-    for (int i = 1; i < size; i++) {
-        if (*(arr + i) < smallest) {
-            smallest = *(arr + i);
-        }
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (*(arr + mid) == target)
+            return mid;
+        else if (*(arr + mid) < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
     }
-    return smallest;
+    return -1;
 }
-Explanation:
+Recursive Binary Search Using Pointers in C++
 
-We assume the first element is the smallest.
-
-We traverse the array using pointers.
-
-We update the smallest variable whenever we find a smaller element.
-
-Time Complexity: O(n)
-
-Space Complexity: O(1)
-
-2. Algorithm to Find the Second and Third Largest Elements in an Array (Using Pointers in C++)
 cpp
 Copy
 Edit
-#include <iostream>
-using namespace std;
+int binarySearchRecursive(int* arr, int left, int right, int target) {
+    if (left > right)
+        return -1;
 
-void findSecondAndThirdLargest(int* arr, int size, int& second, int& third) {
-    if (size < 3) {
-        cout << "Array must have at least 3 elements." << endl;
-        return;
-    }
+    int mid = left + (right - left) / 2;
 
-    int first = -9999999;
-    second = -9999999;
-    third = -9999999;
-
-    for (int i = 0; i < size; i++) {
-        int current = *(arr + i);
-
-        if (current > first) {
-            third = second;
-            second = first;
-            first = current;
-        } else if (current > second && current != first) {
-            third = second;
-            second = current;
-        } else if (current > third && current != second && current != first) {
-            third = current;
-        }
-    }
+    if (*(arr + mid) == target)
+        return mid;
+    else if (*(arr + mid) < target)
+        return binarySearchRecursive(arr, mid + 1, right, target);
+    else
+        return binarySearchRecursive(arr, left, mid - 1, target);
 }
-Explanation:
+3. Complexity Analysis
+Time Complexity (Both Iterative and Recursive):
 
-We use three variables: first, second, and third to track the top three largest values.
+Best Case: O(1)
 
-On each iteration, we compare and update them accordingly, ignoring duplicates.
+Average Case: O(log n)
 
-This solution works in a single pass.
+Worst Case: O(log n)
 
-Time Complexity: O(n)
+Space Complexity:
 
-Space Complexity: O(1)
+Iterative Approach: O(1) (constant space)
 
-Example Usage:
-cpp
-Copy
-Edit
-int main() {
-    int arr[] = {14, 3, 27, 8, 35, 10, 27};
-    int size = sizeof(arr) / sizeof(arr[0]);
+Recursive Approach: O(log n) (due to recursive call stack)
 
-    int smallest = findSmallest(arr, size);
-    cout << "Smallest Number: " << smallest << endl;
+4. Summary of Findings
+Binary search is an efficient searching algorithm for sorted arrays. Both iterative and recursive implementations achieve the same time complexity of O(log n). However, the iterative approach uses constant memory, while the recursive approach uses additional memory on the call stack. The recursive method is often preferred for its simplicity and clarity, especially in academic contexts, but in real-world applications where performance and memory are critical, the iterative approach is more efficient.
 
-    int second, third;
-    findSecondAndThirdLargest(arr, size, second, third);
-    cout << "Second Largest: " << second << endl;
-    cout << "Third Largest: " << third << endl;
-
-    return 0;
-}
-Summary of Findings:
-The smallest number can be found efficiently by linear scan with pointers.
-
-Finding second and third largest elements requires careful comparison, avoiding duplicates.
-
-All implementations use pointer arithmetic and are optimized with O(n) time and O(1) space.
-
-This approach demonstrates pointer proficiency and efficient algorithm design.
